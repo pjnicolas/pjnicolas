@@ -117,13 +117,19 @@ const App = () => {
             className="About__content"
             style={aboutContentAnimation}
           >
-            <p>
-              Hi! I'm a spanish developer interested in full stack web development.
-            </p>
+            <div className="About__text">
+              <p>
+                Hi! I'm a spanish developer interested in full stack web development.
+              </p>
 
-            <p>
-              I love <span className="About__tech">Linux</span>, <span className="About__tech">JavaScript</span> and <span className="About__tech">React.js</span>. I also like Node.js, Redux, Java, C, Firebase, Git, Bash... among many others.
-            </p>
+              <p>
+                I love <span className="About__tech">Linux</span>, <span className="About__tech">JavaScript</span> and <span className="About__tech">React.js</span>. I also like Node.js, Redux, Java, C, Firebase, Git, Bash... among many others.
+              </p>
+
+              <p>
+                I'm currently working as a co-founder/developer in a startup called Gloam in Murcia, Spain.
+              </p>
+            </div>
 
             <div className="About__footer">
               <div className="About__contact">
