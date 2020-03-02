@@ -1,0 +1,41 @@
+{
+  "name": "pjnicolas",
+  "version": "0.0.1",
+  "description": "My personal webpage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dizzyrobin/pjnicolas.git"
+  },
+  "keywords": [
+    "pjnicolas"
+  ],
+  "author": "dizzyrobin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dizzyrobin/pjnicolas/issues"
+  },
+  "homepage": "https://github.com/dizzyrobin/pjnicolas#readme",
+  "dependencies": {
+    "parcel-bundler": "^1.12.4",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-particles-js": "^2.7.1",
+    "react-redux": "^7.2.0",
+    "react-spring": "^8.0.27",
+    "redux": "^4.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "sass": "^1.26.2"
+  }
+}
