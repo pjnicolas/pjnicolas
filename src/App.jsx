@@ -1,13 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Particles from 'react-particles-js';
-import { useSpring, useChain, animated } from 'react-spring';
-
-import particlesConfig from './particlesjs.json';
+import { useSpring, useChain, animated, config } from 'react-spring';
 
 import GithubMark from './assets/GitHub-Mark-Light-64px.png';
 import LinkedIn from './assets/LinkedIn-Light.png';
-
+import resumeLinkES from './pedro-javier-nicolas-zamora-ES.pdf'
 import './App.scss';
+
 
 const useWindowSize = () => {
   const isClient = typeof window === 'object';
@@ -35,59 +33,92 @@ const useWindowSize = () => {
   return windowSize;
 };
 
-const useResponsive = (desktop, tablet, phone) => {
-  const windowSize = useWindowSize();
 
-  const DESKTOP_WIDTH = 1024;
-  const TABLET_WIDTH = 768;
-  // const PHONE_WIDTH = 68;
+// const useResponsive = (desktop, tablet, phone) => {
+//   const windowSize = useWindowSize();
 
-  if (windowSize.width < TABLET_WIDTH) return phone;
-  if (windowSize.width <= DESKTOP_WIDTH) return tablet;
-  return desktop;
-};
+//   const MIN_DESKTOP_WIDTH = 1024;
+//   const MIN_TABLET_WIDTH = 768;
+
+//   if (windowSize.width < MIN_TABLET_WIDTH) return phone;
+//   if (windowSize.width <= MIN_DESKTOP_WIDTH) return tablet;
+//   return desktop;
+// };
+
 
 const App = () => {
   const [open, setOpen] = useState(null);
+  const [aboutWidth, setAboutWidth] = useState(null);
+  const [aboutHeight, setAboutHeight] = useState(null);
+  const aboutRef = useRef();
+  const windowSize = useWindowSize();
 
-  let closedButtonWidth = useResponsive('20vw', '40vw', '65vw');
-  let aboutHeight = useResponsive('65vw', '70vw', '75vw');
+  useEffect(() => {
+    if (aboutRef.current) {
+      setAboutWidth(aboutRef.current.offsetWidth);
+      setAboutHeight(aboutRef.current.offsetHeight);
+    } else {
+      setAboutWidth(null);
+      setAboutHeight(null);
+    }
+  }, [aboutRef]);
+
+  let width = 'auto';
+  if (aboutWidth) {
+    width = open ? `${windowSize.width}px` : `${aboutWidth + 1}px`;
+  }
+
+  let height = 'auto';
+  if (aboutHeight) {
+    height = open ? `${windowSize.height * 0.75}px` : `${aboutHeight}px`;
+  }
 
   const aboutAnimationFirstRef = useRef();
   const aboutAnimationFirst = useSpring({
-    width: open ? '100vw' : closedButtonWidth,
-    borderRadius: open ? '0' : '5vh',
+    width,
+    backgroundColor: open ? '#81818130' : '#ffa500',
+    borderRadius: open ? '0' : '99px',
     ref: aboutAnimationFirstRef,
-    config: {
-      duration: 100,
-    },
+    config: config.default,
   });
 
   const aboutAnimationSecondRef = useRef();
   const aboutAnimationSecond = useSpring({
-    height: open ? aboutHeight : '10vh',
+    height,
     marginBottom: open ? '0' : '40vh',
     ref: aboutAnimationSecondRef,
+    config: config.default,
   });
 
-  const aboutContentAnimationRef = useRef();
-  const aboutContentAnimation = useSpring({
-    opacity: open ? 1 : 0,
-    ref: aboutContentAnimationRef,
+  const aboutContentAnimationFirstRef = useRef();
+  const aboutContentAnimationFirst = useSpring({
+    display: open ? 'flex' : 'none',
+    ref: aboutContentAnimationFirstRef,
     config: {
-      duration: 300,
+      duration: 1,
     },
   });
 
+  const aboutContentAnimationSecondRef = useRef();
+  const aboutContentAnimationSecond = useSpring({
+    opacity: open ? 1 : 0,
+    ref: aboutContentAnimationSecondRef,
+    config:  config.default,
+  });
+
   useChain(open
-    ? [aboutAnimationFirstRef, aboutAnimationSecondRef, aboutContentAnimationRef]
-    : [aboutContentAnimationRef, aboutAnimationSecondRef, aboutAnimationFirstRef]
+    ? [aboutAnimationFirstRef, aboutAnimationSecondRef, aboutContentAnimationFirstRef, aboutContentAnimationSecondRef]
+    : [aboutContentAnimationSecondRef, aboutContentAnimationFirstRef, aboutAnimationSecondRef, aboutAnimationFirstRef]
   );
-  // , open ? null : [0, 0.4]);
 
   const aboutAnimation = {
     ...aboutAnimationFirst,
     ...aboutAnimationSecond,
+  };
+
+  const aboutContentAnimation = {
+    ...aboutContentAnimationFirst,
+    ...aboutContentAnimationSecond,
   };
 
   return (
@@ -96,22 +127,23 @@ const App = () => {
         <div className="Home__info">
           <div className="Home__name">
             PEDRO JAVIER NICOLÁS ZAMORA
-        </div>
+          </div>
           <div className="Home__job">
             Software developer
           </div>
         </div>
         <animated.div
-          className={`About ${open && 'About--open'} ${open === false && 'About--close'}`}
+          className="About"
           style={aboutAnimation}
+          ref={aboutRef}
         >
           <button
             type="button"
-            className={`About__button ${open && 'About__button--open'} ${open === false && 'About__button--close'}`}
+            className="About__button"
             onClick={() => setOpen(o => !o)}
           >
             About me
-        </button>
+          </button>
 
           <animated.div
             className="About__content"
@@ -127,7 +159,7 @@ const App = () => {
               </p>
 
               <p>
-                I'm currently working as a co-founder/developer in a startup called Gloam in Murcia, Spain.
+                You can download my resume <a href={resumeLinkES}>here</a> (spanish version).
               </p>
             </div>
 
@@ -155,15 +187,6 @@ const App = () => {
             </div>
           </animated.div>
         </animated.div>
-      </div>
-      <div className={`Particles__wrapper ${open && 'Particles__wrapper--blur'}`}>
-        <Particles
-          params={particlesConfig}
-          width="100vw"
-          height="100vh"
-          className="Particles"
-          canvasClassName="Particles__canvas"
-        />
       </div>
     </div>
   );
